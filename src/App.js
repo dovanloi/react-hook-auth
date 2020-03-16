@@ -6,17 +6,17 @@ const listTab = [
   {
     id: 'signin',
     title: 'Sign Up',
-    content:  <Signup />
+    // content:  <Signup />
   },
   {
     id: 'login',
     title: 'Log In',
-    content: <Login />
+    // content: <Login />
   }
 ]
 
 const App = () => {
-  const [tab, setTab] = useState(listTab[0]);
+  const [tab, setTab] = useState(listTab[0].id);
   return (
     <div className="wrapper">
       <div className="auth-container">
@@ -24,16 +24,19 @@ const App = () => {
           {
             listTab && listTab.map((item, index) => (
               <div
-                className={`auth-tab__item ${tab.id === item.id ? 'active' : ''}`}
+                className={`auth-tab__item ${tab === item.id ? 'active' : ''}`}
                 key={item.id || `auth-tab-${index}`}
-                onClick={() => setTab(item)}
+                onClick={() => setTab(item.id)}
               >{item.title || ''}</div>
             ))
           }
         </div>
         <div className='auth-tab__form'>
           {
-            (tab && tab.content)
+            (tab === 'signin') ?
+              <Signup />
+              :
+              <Login />
           }
         </div>
       </div>
