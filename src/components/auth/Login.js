@@ -1,20 +1,20 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { useForm } from '../../Utils/useForm';
-import {isEmpty} from 'lodash';
-
-const isError = ({ firstName, lastName, email, password }) => {
+import { isEmpty } from 'lodash';
+import TextUtils from '../../Utils/textUtils';
+const isError = ({ email, password }) => {
   const errors = {};
-  if(isEmpty(email)) errors.email = true;
-  if(isEmpty(password)) errors.password = true;
+  if (isEmpty(email) || !TextUtils.validateEmail(email)) errors.email = true;
+  if (isEmpty(password) || password.length < 5) errors.password = true;
   return errors;
 }
 
-const Login = ({}) => {
+const Login = ({ }) => {
   const [values, handleChange] = useForm({ email: '', password: '' });
   const [errors, setErrors] = useState({});
 
   const onChange = (e) => {
-    const name =  e.target.name;
+    const name = e.target.name;
     if (errors[name]) {
       delete errors[name];
       setErrors(errors);
@@ -23,8 +23,8 @@ const Login = ({}) => {
   }
 
   const onSave = () => {
-    const listErrors = isError(values)    
-    if(Object.keys(listErrors).length) {
+    const listErrors = isError(values)
+    if (Object.keys(listErrors).length) {
       setErrors(listErrors);
       return
     }
@@ -36,25 +36,25 @@ const Login = ({}) => {
     <>
       <h2>Welcome Back!</h2>
       <div className="col">
-      <input type="email"
+        <input type="email"
           name='email'
           value={values.email}
           onChange={onChange}
           placeholder="Email Address *"
           className={errors.email ? 'is-valid' : ''}
         />
-        </div>
-        <div className="col">
+      </div>
+      <div className="col">
         <input type="password"
           name='password'
           value={values.password}
           onChange={onChange}
           placeholder="Password"
           className={errors.password ? 'is-valid' : ''}
-          />
-        </div>
-        <p className="forgot"><a href="#">Forgot Password?</a></p>
-        <button onClick={onSave} className="btn">Log In</button>
+        />
+      </div>
+      <p className="forgot"><a href="#">Forgot Password?</a></p>
+      <button onClick={onSave} className="btn">Log In</button>
     </>
   )
 }

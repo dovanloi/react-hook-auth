@@ -1,13 +1,14 @@
 import React, {useState} from 'react';
 import { useForm } from '../../Utils/useForm';
 import {isEmpty} from 'lodash';
+import TextUtils from '../../Utils/textUtils';
 
 const isError = ({ firstName, lastName, email, password }) => {
   const errors = {};
   if(isEmpty(firstName)) errors.firstName = true;
   if(isEmpty(lastName)) errors.lastName = true;
-  if(isEmpty(email)) errors.email = true;
-  if(isEmpty(password)) errors.password = true;
+  if(isEmpty(email)|| !TextUtils.validateEmail(email)) errors.email = true;
+  if(isEmpty(password) || password.length < 5) errors.password = true;
   return errors;
 }
 
